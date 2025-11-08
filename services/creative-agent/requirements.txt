@@ -1,0 +1,10 @@
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# Google AI Studio SDK
+google-generativeai
+
+# Utilities for settings management
+python-dotenv
+pydantic-settings

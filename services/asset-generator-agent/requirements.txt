@@ -1,0 +1,14 @@
+# Task Queue Framework
+celery==5.3.6
+kombu==5.3.7
+
+# MinIO Official Python Client
+minio
+
+# Google AI SDK
+google-genai
+Pillow
+
+# Utilities
+python-dotenv
+pydantic-settings

@@ -1,0 +1,133 @@
+# docker-compose.yml
+# FINAL MERGED VERSION - Combines existing services with essential healthchecks
+
+version: '3.8'
+
+services:
+
+  # --- APPLICATION SERVICES ---
+
+  api-gateway:
+    container_name: video-api-gateway
+    build: ./services/api-gateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - orchestrator # This simple depends_on is fine here
+    restart: unless-stopped
+
+  orchestrator:
+    container_name: video-orchestrator
+    build: ./services/orchestrator-agent
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      # Use the 'service_healthy' condition to wait for infrastructure
+      db:
+        condition: service_healthy
+      message_queue:
+        condition: service_healthy
+      # Use 'service_started' for other app services, as they start quickly
+      creative-director:
+        condition: service_started
+    restart: unless-stopped
+
+  creative-director:
+    container_name: video-creative-director
+    build: ./services/creative-agent
+    env_file:
+      - .env
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+
+  asset-generator:
+    container_name: video-asset-generator
+    build: ./services/asset-generator-agent
+    env_file:
+      - .env
+    depends_on:
+      # Wait for infrastructure to be fully healthy before starting
+      message_queue:
+        condition: service_healthy
+      objectstorage:
+        condition: service_healthy
+    restart: unless-stopped
+        
+  post-production:
+    container_name: video-post-production
+    build: ./services/post-production-agent
+    env_file:
+      - .env
+    depends_on:
+      # Wait for infrastructure to be fully healthy before starting
+      message_queue:
+        condition: service_healthy
+      objectstorage:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # --- INFRASTRUCTURE SERVICES ---
+
+  db:
+    image: postgres:15-alpine
+    container_name: video-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      # --- THIS IS THE FINAL FIX ---
+      # We now explicitly specify both the USER and the DATABASE to check.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  message_queue:
+    image: rabbitmq:3.11-management-alpine
+    container_name: video-mq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: unless-stopped
+    # --- ADDED HEALTHCHECK ---
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping", "-q"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s # Gives RabbitMQ time to start before the first check
+
+  objectstorage:
+    image: minio/minio:latest
+    container_name: video-storage
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+    # --- ADDED HEALTHCHECK ---
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+      start_period: 10s # Gives MinIO time to start before the first check
+
+# --- PERSISTENT VOLUMES ---
+volumes:
+  postgres_data:
+  minio_data:

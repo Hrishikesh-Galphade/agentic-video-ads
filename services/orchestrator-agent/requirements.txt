@@ -1,0 +1,18 @@
+    # Web Framework
+fastapi
+uvicorn[standard]
+
+# AI and Workflow Engine
+langchain
+langgraph
+google-generativeai # <-- This is the library for the Google AI Studio API
+
+# Database
+sqlalchemy
+psycopg2-binary
+
+# Utilities
+python-dotenv
+pydantic-settings
+celery
+kombu

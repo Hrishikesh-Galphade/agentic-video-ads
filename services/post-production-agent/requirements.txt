@@ -1,0 +1,11 @@
+# Task Queue Framework
+celery
+# RabbitMQ support for Celery
+kombu
+# S3-compatible storage client (for MinIO)
+# MinIO Official Python Client
+minio
+
+# For environment variables
+python-dotenv
+pydantic-settings
