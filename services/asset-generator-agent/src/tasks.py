@@ -17,7 +17,7 @@ from .core.config import settings
 # Using the corrected, valid hostname 'minio-storage'
 try:
     minio_client = Minio(
-        "minio-storage:9000",
+        "objectstorage:9000",
         access_key="minioadmin",
         secret_key="minioadmin",
         secure=False

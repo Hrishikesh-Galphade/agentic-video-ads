@@ -16,7 +16,7 @@ You must respond in a valid JSON format with two keys: "script" and "storyboard"
 - The "script" should be a short, punchy, and compelling voiceover script for the ad.
 - The "storyboard" should be an array of JSON objects. Each object represents a scene and must have two keys: "scene_number" (an integer) and "visual_description" (a detailed description of the visuals for that scene, which will be used to generate video clips).
 
-Generate 5 scenes for the storyboard. Be creative and professional.
+Generate 3 scenes for the storyboard. Be creative and professional.
 """
 
 # Initialize the Generative Model
