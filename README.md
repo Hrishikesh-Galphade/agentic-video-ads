@@ -47,16 +47,19 @@ This project is designed as a **Hybrid Agentic Microservices Model**. It combine
 |  - Stores job status      |      |  - Asynchronous task jobs |      |    - Stores video assets   |
 +---------------------------+      +-------------+-------------+      +----------------------------+
                                                  | (Async Celery Tasks)
-                               +-----------------v-----------------+-----------------v------------------+
-                               |                                   |                                    |
-+---------------------------+  |  +---------------------------+  |  +---------------------------+
-|                           |  |  |                           |  |  |                           |
-| Asset Generation Service  |<----+                           +--->|   Post-Production Service   |
-| (Celery Worker)           |     |                           |     | (Celery Worker + FFMPEG)    |
-| - Veo (Video Generation)  |     |                           |     | - Audio/Video Mixing        |
-| - ElevenLabs (Voiceover)  |     |                           |     | - Background Music          |
+                +-----------------v-----------------+-----------------v------------------+
+                |                                   |                                    |
+                |                                   |                                    |
+                |                                   |                                    |                 |                                   |                                    |                
 +---------------------------+     +---------------------------+     +---------------------------+
-
+|                           |     |   Workflow Manager        |     |                           |
+| Asset Generation Service  |<--->|   (Celery Worker)         |<--->|   Post-Production Service |
+| (Celery Worker)           |     |                           |     | (Celery Worker + FFMPEG)  |
+| - Veo (Video Generation)  |     |                           |     | - Audio/Video Mixing      |
+| - MinIO (Asset Storage)   |     |                           |     | - Background Music        |
+| - ElevenLabs (Voiceover)  |     |                           |     |                           |
+| - MinIO (Asset Storage)   |     |                           |     |                           |          
++---------------------------+     +---------------------------+     +---------------------------+   
 ```
 
 ### Component Breakdown
