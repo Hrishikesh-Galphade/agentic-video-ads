@@ -1,0 +1,7 @@
+$headers = @{
+    "Content-Type" = "application/json"
+}
+
+$body = '{"prompt": "A sophisticated and inspiring 30-second video ad for a firm specializing in luxury interior design for 3BHK flats. The target audience is affluent, modern families who value both style and functionality. The tone should be elegant, warm, and aspirational. The ad must highlight clever space-saving furniture, premium materials like polished wood and marble, and integrated smart home features. End with the tagline: ''Your Space, Reimagined.'' and the company website ''LuxeLivingDesigns.com''."}'
+
+Invoke-WebRequest -Uri "http://localhost:8080/jobs" -Method POST -Headers $headers -Body $body

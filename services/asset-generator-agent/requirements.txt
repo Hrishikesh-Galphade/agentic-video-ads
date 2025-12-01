@@ -13,3 +13,5 @@ Pillow
 # Utilities
 python-dotenv
 pydantic-settings
+requests 
+elevenlabs

@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     
     CREATIVE_AGENT_URL: Optional[str] = Field(default=None)
 
+    ELEVENLABS_API_KEY: Optional[str] = Field(default=None)
+    ELEVENLABS_VOICE_ID: Optional[str] = Field(default="21m00Tcm4TlvDq8ikWAM")
+
     # This tells Pydantic to look for a .env file.
     # Docker Compose's `env_file` makes this redundant but it's good practice.
     model_config = SettingsConfigDict(env_file=".env", extra='ignore')
