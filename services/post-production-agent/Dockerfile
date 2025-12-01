@@ -22,6 +22,7 @@ RUN pip install --no-cache-dir --trusted-host pypi.python.org -r requirements.tx
 
 # Copy the entire 'src' directory from our host into the container's working directory
 COPY ./src ./src
+COPY ./assets ./assets
 
 # The command to run when the container starts.
 # This starts a Celery worker that will listen for post-production tasks.

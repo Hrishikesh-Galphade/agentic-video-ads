@@ -100,7 +100,7 @@ def post_production_task(asset_urls: dict) -> dict:
                 # -map [aout] -> Use mixed audio
                 # -shortest -> Cut music when video ends
                 ffmpeg_cmd.extend([
-                    "-filter_complex", "[2:a]volume=0.1[bg];[1:a][bg]amix=inputs=2:duration=first[aout]",
+                    "-filter_complex", "[2:a]volume=0.1[bg];[1:a][bg]amix=inputs=2:duration=longest[aout]",
                     "-map", "0:v", "-map", "[aout]",
                     "-c:v", "copy", "-c:a", "aac", "-shortest",
                     final_output_path

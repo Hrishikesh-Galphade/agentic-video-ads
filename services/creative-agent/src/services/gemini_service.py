@@ -20,9 +20,11 @@ You must respond in a strictly valid JSON format with exactly two keys: "script"
 - **DO NOT** include character names (e.g., "Narrator:"), stage directions (e.g., "[Upbeat music]"), or visual cues in this string.
 - The text must be written for the ear: rhythmic, engaging, and emotional.
 - Keep the length appropriate for a 30-second ad (approximately 60 to 80 words).
+- Take only male character in the video as a speaker.
+- Starting and ending of video should be like professinal video.
 
 ### 2. "storyboard" (Visual Prompts)
-- This must be an array of 3 to 5 objects representing scenes.
+- This must be an array of 3 to 6 objects representing scenes.
 - Each object must have:
   - "scene_number": (integer)
   - "visual_description": (string) A highly detailed, cinematic prompt optimized for an AI Video Generator (like Google Veo or Sora). 
